@@ -9,13 +9,32 @@ import Loader from "../components/Loader";
 
 const Contact = () => {
   const formRef = useRef();
+  const formm=useRef();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const { alert, showAlert, hideAlert } = useAlert();
   const [loading, setLoading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
 
+
+  
   const handleChange = ({ target: { name, value } }) => {
     setForm({ ...form, [name]: value });
+  };
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm('service_4a4y1wa', 'template_97maalo', formm.current, {
+        publicKey: 'iQOYSOXjjuP0ZrGF-',
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        },
+      );
   };
 
   const handleFocus = () => setCurrentAnimation("walk");
@@ -80,8 +99,9 @@ const Contact = () => {
         <h1 className='head-text'>Get in Touch</h1>
 
         <form
-          ref={formRef}
-          onSubmit={handleSubmit}
+          ref={formm}
+          onSubmit={sendEmail}
+          
           className='w-full flex flex-col gap-7 mt-14'
         >
           <label className='text-black-500 font-semibold'>
